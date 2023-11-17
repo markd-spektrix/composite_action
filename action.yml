@@ -1,21 +1,22 @@
-name: 'Hello World'
-description: 'Greet someone'
-inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
-    required: true
-    default: 'World'
-outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-number }}
+name: Auto PR Commentor
+author: The Robot
+
+branding:
+  icon: 'award'
+  color: 'green'
+
+
 runs:
   using: "composite"
   steps:
-    - run: echo Hello ${{ inputs.who-to-greet }}.
-      shell: bash
-    - id: random-number-generator
-      run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
-      shell: bash
-    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
-      shell: bash
+      - name: Set current date as env variable
+        run: echo "NOW=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+
+      - name: Add comment
+        run: gh pr comment "$NUMBER" --repo "$REPO" --body "$BODY" --edit-last
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            NUMBER: ${{ github.event.pull_request.number }}
+            REPO: ${{ github.repository }}
+            BODY: >
+                LOOK MA! I am a comment! $NOW
