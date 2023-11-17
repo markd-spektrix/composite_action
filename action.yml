@@ -5,17 +5,25 @@ branding:
   icon: 'award'
   color: 'green'
 
+inputs:
+  token:
+    description: 'Github Token'
+    required: true
 
 runs:
   using: "composite"
   steps:
       - name: Set current date as env variable
         run: echo "NOW=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
+        shell: bash
+
 
       - name: Add comment
         run: gh pr comment "$NUMBER" --repo "$REPO" --body "$BODY" --edit-last
+        shell: bash
+
         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_TOKEN: ${{ INPUT_TOKEN }}
             NUMBER: ${{ github.event.pull_request.number }}
             REPO: ${{ github.repository }}
             BODY: >
