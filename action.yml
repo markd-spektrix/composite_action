@@ -19,7 +19,7 @@ runs:
 
 
       - name: Add comment
-        run: gh pr comment "$NUMBER" --repo "$REPO" --body "$BODY" --edit-last
+        run: gh pr comment "$NUMBER" --repo "$REPO" --body "$BODY"
         shell: bash
 
         env:
