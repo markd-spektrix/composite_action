@@ -23,7 +23,7 @@ runs:
         shell: bash
 
         env:
-            GITHUB_TOKEN: ${{ INPUT_TOKEN }}
+            GITHUB_TOKEN: ${{ inputs.token }}
             NUMBER: ${{ github.event.pull_request.number }}
             REPO: ${{ github.repository }}
             BODY: >
